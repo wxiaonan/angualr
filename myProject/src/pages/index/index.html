@@ -1,0 +1,48 @@
+<!--
+  Generated template for the IndexPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>index</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <!--轮播图-->
+  <ion-slides *ngIf="carouselList.length>0" loop autoplay='1000' style="height:150px" pager>
+    <ion-slide *ngFor="let item of carouselList"><img [src]="'../../assets/'+item.img" alt=""></ion-slide>
+  </ion-slides>
+
+<!--新品上市-->
+  <ion-scroll scrollX style="height:300px;white-space:nowrap">
+    <ion-card *ngFor="let item of newArrialItems" style="display:inline-block">
+      <ion-card-header>
+          <img [src]="'../../assets/'+item.pic" alt="">
+      </ion-card-header>
+      <ion-card-content>
+        <h4>{{item.title}}</h4>
+      </ion-card-content>
+   
+    </ion-card>
+  </ion-scroll>
+
+  <!--推荐商品-->
+  <ion-list>
+       <ion-item *ngFor="let item of recommendedItems" text-wrap  [navPush]="detail" [navParams]='{id:item.pid}' >
+         <ion-thumbnail item-start> 
+           <img [src]="'../../assets/'+item.pic" alt="">
+         </ion-thumbnail>
+         <h4>{{item.title}}</h4>
+         <p>{{item.details}}</p>
+         <button ion-button clear item-end>
+           <ion-icon name='cart'></ion-icon>
+         </button>
+       </ion-item>
+  </ion-list>
+</ion-content>
