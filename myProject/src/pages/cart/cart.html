@@ -23,26 +23,30 @@
 
   </div>
   <ion-list>
-    <ion-item *ngFor="let item of cartList">
-        <ion-checkbox></ion-checkbox>
-        <ion-thumbnail item-start>
-          <ion-grid>
-            <ion-row>
-              <ion-col col-3>
-                  <img [src]="'../../assets/'+item.pic" alt="">
-              </ion-col>
-              <ion-col>  
-                <h4>{{item.title}}</h4>
-                <p>{{item.price}}</p>
-                <button>-</button>
-                <span>{{item.count}}</span>
-                <button>+</button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        
-        </ion-thumbnail>
-    </ion-item>
+    <ion-item-sliding *ngFor="let item of cartList;let myIndex=index">
+      <ion-item >
+          <ion-checkbox [(ngModel)]="item.isSelected" (ngModelChange)="handleSelectOne()"></ion-checkbox>
+          <ion-thumbnail item-start>
+            <ion-grid>
+              <ion-row>
+                <ion-col col-3>
+                    <img [src]="'../../assets/'+item.pic" alt="">
+                </ion-col>
+                <ion-col>  
+                  <h4>{{item.title}}</h4>
+                  <p>{{item.price}}</p>
+                  <button (click)="minCount(myIndex)">-</button>
+                  <span>{{item.count}}</span>
+                  <button (click)="addCount(myIndex)">+</button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-thumbnail>
+      </ion-item>
+      <ion-item-options>
+          <button ion-button color="danger" (click)='deleteItem(myIndex)'>删除</button>
+      </ion-item-options>
+  </ion-item-sliding>
   </ion-list>
 
 </ion-content>
@@ -52,12 +56,12 @@
    <ion-grid >
      <ion-row align-items-center>
        <ion-col col-2> 
-       <span>全选</span>
-         <ion-checkbox></ion-checkbox></ion-col>
+         <span>全选</span>
+         <ion-checkbox [(ngModel)]="isAllSelected" (ngModelChange)="handleAll()"></ion-checkbox></ion-col>
        <ion-col col-4>
-         <h4>合计消费1000元</h4>
+         <h4>合计消费{{getTotalPrice() | currency:'CNY'}}</h4>
         </ion-col>
-       <ion-col><button ion-button color="danger">去结算</button></ion-col>
+       <ion-col><button ion-button color="danger" block (click)="jump()">去结算</button></ion-col>
      </ion-row>
    </ion-grid>
 </ion-footer>

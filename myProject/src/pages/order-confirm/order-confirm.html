@@ -10,9 +10,26 @@
     <ion-title>order-confirm</ion-title>
   </ion-navbar>
 
-</ion-header>
+</ion-header>   
 
 
 <ion-content padding>
+  
+ <ion-list>
+   <ion-item>
+     <ion-icon name="pin" item-start></ion-icon>
+     <h4>收货人：张三 </h4>
+     <p>收货地址：北京丰台区马家堡街道</p>
 
+   </ion-item>
+    <ion-item *ngFor="let item of cartList">
+        <ion-thumbnail item-start>
+          <img [src]="'../../assets/'+item.pic">
+        </ion-thumbnail>
+        <h4>{{item.title}}</h4>
+        <h5>{{item.spec}}</h5>
+        <p style="color:red">{{item.price+"x"+item.count}}</p>
+      </ion-item>
+ </ion-list>
+ <button ion-button color="secondary" block round (click)="showModal()">在线支付</button>
 </ion-content>

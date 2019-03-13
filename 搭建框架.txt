@@ -17,7 +17,7 @@ this.http.get(myUrl, { withCredentials: true })
 2、搭建项目框架 
 步骤1 、创建公用服务
 在app目录下创建文件夹utility,
-在utility中创建service文件夹，在该文件夹下创建网络请求服务myhttp.service.ts
+在utility中创建service文件夹，在该文件夹下创建网络请求服务myhttp.service.ts（终端命令行：ng  g service myhttp ）
 
 步骤2：在pages目录下创建以下page（通过命令行 ionic g page ***）
 
@@ -51,7 +51,7 @@ help
 
 一、index
  ①向服务器端请求
-  http://localhost/cl/ajia_code/data/product/
+  http://localhost:8080/index
  ②将数据保存
  ③显示 
   轮播图 ionSlides
@@ -68,7 +68,7 @@ help
 	
   ①接收传来的商品的id
   ②请求给id对应的商品详情数据
-  http://localhost/cl/ajia_code/data/product/details.php?lid=3
+  http://localhost:8080/product/detail?lid=3
   ③将请求到的详情数据 显示在视图
   ④点击页脚的按钮时的处理
     通过ion-footer来实现的，它会固定在页面的底部。
@@ -77,9 +77,14 @@ help
 	第一个图标--》404
 	第二个图标--》购物车
 	第三个图标--》404
-	加入购物车按钮--》将当前的商品添加到购物车（无论成功还是失败，toast）（如果需要登录，暂时先用http://localhost/cl/ajia_code/cart.html登录）
+	加入购物车按钮--》将当前的商品添加到购物车（无论成功还是失败，toast）
+	          （如果需要登录，暂时先用
+		  http://localhost:8080/cart/add?lid=1&buyCount=1
+		  如果返回的状态时300，跳转login
+		  如果返回状态是200,toast成功
+		  如果返回其他状态码，toast显示失败
   ⑤每次发起网络请求的时候，显示一个loading，
-  当请求完毕（成功还是失败），将loading隐藏
+  当请求完毕（成功还是失败），将loading隐藏---tabsHideOnSubPages=true(ion-tabs)
 
 三、404页面
   ①倒计时
@@ -100,7 +105,7 @@ help
 
  ①搞定静态页面
  ②处理点击登录的行为
-   获取用户名、密码；http://localhost/cl/ajia_code/data/user/login.php发送请求
+   获取用户名、密码；http://localhost:8080/user/login发送请求
    登录成功，返回上一页
    登录失败，显示一个toast
 
@@ -108,7 +113,10 @@ help
 五、购物车
 
   ①根据服务器端 获取到的购物车数据
-	  cart/list.php
+	  http://localhost:8080/cart/list
+	  如果状态码300，跳转到login
+	  如果状态码200，跳转到购物车列表
+
   ②将购物车中的数据 渲染在视图
 	购物车中有数据和无数据，分为两种情况来显示
 	
@@ -117,15 +125,15 @@ help
 
   currency/slice/number...
   
-  ③实现全选功能
+  ③实现全选功能（两个功能 当全选时，每个复选框勾选；当每个复选框勾选时，全选框勾选）
    
-    给购物车list中每个商品 添加一个isSelected属性，将该属性的值 通过双向数据绑定 绑定到复选框
+    1.给购物车list中每个商品 添加一个isSelected属性，将该属性的值 通过双向数据绑定 绑定到复选框
 
     全选--》将list所有的复选框的isSelected
 
 
-    list中复选框都选中--》全选自动被选中
-    list中复选框有一个未选中--》全选自动取消选中
+    2.list中复选框都选中--》全选自动被选中
+    list中复选框有一个未选中--》全选自动取消选中   
 
   ④计算总计的功能
    计算list中isSelected为true的产品：数量乘以单价的总和
@@ -138,12 +146,14 @@ help
 
 六、订单确认页面 
  1、获取购物车列表
+ http://localhost:8080/cart/list
  2、通过一个缩略图列表显示
  3、点击在线支付 弹出一个模态窗（模态窗的内容是支付PayPage）
  4、实现支付页面静态页面
 
  5、实现支付页面动态功能
-	点击支付-》显示一个3s中的loading--》跳转到首页
+	点击支付-》显示一个3s中的loading--》
+	关闭模态窗。跳转到首页
 	点击x号--》关闭模态窗(ViewController)
 
  新知识：
@@ -161,3 +171,7 @@ help
 七、实现个人中心
 	1、显示静态页面
 	2、实现退出登录的功能
+移动端，通信过程中，loading sessionId 携带凭证 credentials
+1.创建服务
+2.实现服务中封装的方法
+3.调用服务
